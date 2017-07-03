@@ -117,39 +117,35 @@
 
     // vex callback function
     var submitting = function (data) {
-        if (!data) {
-            console.log('Cancelled');
-        } else {
-            var conditions = [];
-            Object.keys(data).forEach(function(key) {
-                var val = this[key].trim();
-                switch(key) {
-                    case 'wip':
-                    case 'kind':
-                    case 'stared':
-                    case 'watched':
-                    case 'sharing':
-                        if (val === 'none') return;
-                        conditions.push(key + ':' + val);
-                        break;
-                    case 'keyword':
-                        var words1 = val.split(' ').reverse();
-                        for(var w1 of words1) {
-                            conditions.unshift(w1);
-                        }
-                        break;
-                    default:
-                        var words2 = val.split(' ');
-                        for(var w2 of words2) {
-                            conditions.push(key + ':' + w2);
-                        }
-                }
-            }, data);
-            console.log(conditions);
+        if (!data) return console.log('Cancelled');
 
-            $('#search_input').val(conditions.join(' '));
-            form.submit();
-        }
+        var conditions = [];
+        Object.keys(data).forEach(function(key) {
+            var val = this[key].trim();
+            switch(key) {
+                case 'wip':
+                case 'kind':
+                case 'stared':
+                case 'watched':
+                case 'sharing':
+                    if (val === 'none') return;
+                    conditions.push(key + ':' + val);
+                    break;
+                case 'keyword':
+                    for(let w of val.split(' ').reverse()) {
+                        conditions.unshift(w);
+                    }
+                    break;
+                default:
+                    for(let w of val.split(' ')) {
+                        conditions.push(key + ':' + w);
+                    }
+            }
+        }, data);
+        console.log(conditions);
+
+        $('#search_input').val(conditions.join(' '));
+        form.submit();
     };
 
     // Register click event

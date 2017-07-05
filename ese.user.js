@@ -72,6 +72,18 @@
                 '<input name="keyword" type="text" placeholder="keyword" />',
             '</div>',
             '<div class="vex-custom-block">',
+                '<label>記事名</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名にkeywordを含むものを絞り込み"></i>' +
+                '<input name="title" type="text" placeholder="keyword" />',
+            '</div>',
+            '<div class="vex-custom-block">',
+                '<label>記事本文</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事本文にkeywordを含むものを絞り込み"></i>' +
+                '<input name="body" type="text" placeholder="keyword" />',
+            '</div>',
+            '<div class="vex-custom-block">',
+                '<label>記事作成者</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事作成者のscreen_nameで絞り込み"></i>' +
+                '<input name="user" type="text" placeholder="screen_name" />',
+            '</div>',
+            '<div class="vex-custom-block">',
                 '<label>Star</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="自分がStarしている記事で絞り込み"></i><br />' +
                 '<input value="true" name="stared" type="radio" id="stared_true" /><label for="stared_true">true</label>' +
                 '<input value="false" name="stared" type="radio" id="stared_false" /><label for="stared_false">false</label>' +
@@ -110,18 +122,6 @@
             '<div class="vex-custom-block">',
                 '<label>タグ</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="tagタグが付いているものを絞り込み"></i>' +
                 '<input name="tag" type="text" placeholder="tag" />',
-            '</div>',
-            '<div class="vex-custom-block">',
-                '<label>記事名</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名にkeywordを含むものを絞り込み"></i>' +
-                '<input name="title" type="text" placeholder="keyword" />',
-            '</div>',
-            '<div class="vex-custom-block">',
-                '<label>記事本文</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事本文にkeywordを含むものを絞り込み"></i>' +
-                '<input name="body" type="text" placeholder="keyword" />',
-            '</div>',
-            '<div class="vex-custom-block">',
-                '<label>記事作成者</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事作成者のscreen_nameで絞り込み"></i>' +
-                '<input name="user" type="text" placeholder="screen_name" />',
             '</div>',
             '<div class="vex-custom-block">',
                 '<label>コメント</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="コメント本文にkeywordが含まれる記事を絞り込み"></i>' +

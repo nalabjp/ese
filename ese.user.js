@@ -28,6 +28,10 @@
         return str.replace(/　/g, ' ');
     }
 
+    function replace_to_only_colon(str) {
+        return str.replace(/: +/g, ':');
+    }
+
     // Add ESE element after form element
     var form = $('form.navbar-form.navbar-sub__navbar-form');
     var ese = $('<i class="fa fa-search-plus" aria-hidden="true id="ese" style="font-size: 24px; margin-top: 17px; margin-left: 10px; color: rgba(0, 0, 0, 0.2)"></i>');
@@ -133,7 +137,7 @@
             '</div>',
             '<div class="vex-custom-block">',
                 '<label>Watch数</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="Watch数で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
-                '<input name="watcheds" type="text" placeholder="number" />',
+                '<input name="watches" type="text" placeholder="number" />',
             '</div>',
             '<div class="vex-custom-block">',
                 '<label>コメント数</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="コメント数で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
@@ -194,6 +198,74 @@
         form.submit();
     };
 
+    // Assign input values
+    var assign_input_values = function() {
+        let input_values = replace_to_only_colon(replace_to_half_space($('#search_input').val())).split(' ');
+        let value_hash = {
+            keyword: [],
+            title: [],
+            body: [],
+            user: [],
+            stared: '',
+            watched: '',
+            wip: '',
+            kind: '',
+            category: [],
+            in: [],
+            on: [],
+            tag: [],
+            comment: [],
+            stars: [],
+            watches: [],
+            comments: [],
+            created: [],
+            updated: [],
+            sharing: '',
+        };
+
+        for(let chunk of input_values) {
+            if (chunk.includes(':')) {
+                let kv = chunk.split(':', 2);
+                switch(kv[0]) {
+                    case 'wip':
+                    case 'kind':
+                    case 'stared':
+                    case 'watched':
+                    case 'sharing':
+                        value_hash[kv[0]] = kv[1];
+                        break;
+                    default:
+                        value_hash[kv[0]].push(kv[1]);
+                }
+            } else {
+                value_hash.keyword.push(chunk);
+            }
+        }
+
+        Object.keys(value_hash).forEach(function(key) {
+            let val = this[key];
+            switch(key) {
+                case 'wip':
+                case 'kind':
+                case 'stared':
+                case 'watched':
+                case 'sharing':
+                    if (val !== '') {
+                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]#' + key + '_' + val).attr('checked', true);
+                    }
+                    break;
+                default:
+                    if (val.length > 0) {
+                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]').focus();
+                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]').val(val.join(' ')).change();
+                    }
+            }
+        }, value_hash);
+
+        // Initial focus
+        $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
+    };
+
     // Register click event
     ese.click(function(){
         vex.dialog.open({
@@ -205,5 +277,7 @@
 
         // Enable after the element that configured Bootstrap tooltip defined
         $('[data-toggle="tooltip"]').tooltip();
+
+        assign_input_values();
     });
 })();

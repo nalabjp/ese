@@ -150,6 +150,11 @@
         '</div>'
     ].join(' ');
 
+    // vex buttons
+    var buttons = [
+        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' })
+    ];
+
     // vex callback function
     var submitting = function (data) {
         if (!data) return console.log('Cancelled');
@@ -188,9 +193,7 @@
         vex.dialog.open({
             message: 'Advanced Search',
             input: dialog,
-            buttons: [
-                $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' })
-            ],
+            buttons: buttons,
             callback: submitting
         });
 

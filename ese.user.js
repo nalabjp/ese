@@ -22,6 +22,12 @@
     GM_addStyle(vexTheme);
     vex.defaultOptions.className = 'vex-theme-default';
 
+    // functions
+    function replace_to_half_space(str) {
+        // em space to half space
+        return str.replace(/　/g, ' ');
+    }
+
     // Add ESE element after form element
     var form = $('form.navbar-form.navbar-sub__navbar-form');
     var ese = $('<i class="fa fa-search-plus" aria-hidden="true id="ese" style="font-size: 24px; margin-top: 17px; margin-left: 10px; color: rgba(0, 0, 0, 0.2)"></i>');
@@ -161,7 +167,7 @@
 
         var conditions = [];
         Object.keys(data).forEach(function(key) {
-            var val = this[key].trim();
+            var val = replace_to_half_space(this[key].trim());
             switch(key) {
                 case 'wip':
                 case 'kind':

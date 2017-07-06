@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      0.2.0
+// @version      0.3.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -192,7 +192,6 @@
                     }
             }
         }, data);
-        console.log(conditions);
 
         $('#search_input').val(conditions.join(' '));
         form.submit();

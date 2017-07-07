@@ -89,9 +89,9 @@
             '</div>',
             '<div class="vex-custom-block">',
                 '<label>Star</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="自分がStarしている記事で絞り込み"></i><br />' +
-                '<input value="true" name="stared" type="radio" id="stared_true" /><label for="stared_true">true</label>' +
-                '<input value="false" name="stared" type="radio" id="stared_false" /><label for="stared_false">false</label>' +
-                '<input value="none" name="stared" type="radio" id="stared_none" /><label for="stared_none">none</label>',
+                '<input value="true" name="starred" type="radio" id="starred_true" /><label for="starred_true">true</label>' +
+                '<input value="false" name="starred" type="radio" id="starred_false" /><label for="starred_false">false</label>' +
+                '<input value="none" name="starred" type="radio" id="starred_none" /><label for="starred_none">none</label>',
             '</div>',
             '<div class="vex-custom-block">',
                 '<label>Watch</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="自分がWatchしている記事で絞り込み"></i><br />' +
@@ -175,7 +175,7 @@
             switch(key) {
                 case 'wip':
                 case 'kind':
-                case 'stared':
+                case 'starred':
                 case 'watched':
                 case 'sharing':
                     if (val === 'none') return;
@@ -205,7 +205,7 @@
             title: [],
             body: [],
             user: [],
-            stared: '',
+            starred: '',
             watched: '',
             wip: '',
             kind: '',
@@ -228,7 +228,7 @@
                 switch(kv[0]) {
                     case 'wip':
                     case 'kind':
-                    case 'stared':
+                    case 'starred':
                     case 'watched':
                     case 'sharing':
                         value_hash[kv[0]] = kv[1];
@@ -246,7 +246,7 @@
             switch(key) {
                 case 'wip':
                 case 'kind':
-                case 'stared':
+                case 'starred':
                 case 'watched':
                 case 'sharing':
                     if (val !== '') {

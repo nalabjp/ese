@@ -5,9 +5,9 @@
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
-// @require      https://cdn.rawgit.com/HubSpot/vex/v4.0.0/dist/js/vex.combined.min.js
-// @resource     vexCSS https://cdn.rawgit.com/HubSpot/vex/v4.0.0/dist/css/vex.css
-// @resource     vexTheme https://cdn.rawgit.com/HubSpot/vex/v4.0.0/dist/css/vex-theme-default.css
+// @require      https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/js/vex.combined.min.js
+// @resource     vexCSS https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex.min.css
+// @resource     vexTheme https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex-theme-default.min.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // ==/UserScript==

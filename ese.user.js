@@ -244,6 +244,8 @@
         Object.keys(value_hash).forEach(function(key) {
             let val = this[key];
             switch(key) {
+                case 'keyword':
+                    break;
                 case 'wip':
                 case 'kind':
                 case 'starred':
@@ -261,7 +263,11 @@
             }
         }, value_hash);
 
-        // Initial focus
+        // Specific for keyword
+        $('.vex-custom-container .vex-custom-block input[name="keyword"]').blur();
+        if (value_hash.keyword.length > 0) {
+          $('.vex-custom-container .vex-custom-block input[name="keyword"]').val(value_hash.keyword.join(' ')).change();
+        }
         $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
     };
 

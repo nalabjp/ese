@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      0.3.0
+// @version      0.4.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -274,18 +274,20 @@
                     break;
                 default:
                     if (val.length > 0) {
-                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]').focus();
-                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]').val(val.join(' ')).change();
+                        let e = $('.vex-custom-container .vex-custom-block input[name="' + key + '"]');
+                        e.focus();
+                        e.val(val.join(' ')).change();
                     }
             }
         }, value_hash);
 
         // Specific for keyword
-        $('.vex-custom-container .vex-custom-block input[name="keyword"]').blur();
+        let e = $('.vex-custom-container .vex-custom-block input[name="keyword"]');
+        e.blur();
         if (value_hash.keyword.length > 0) {
-          $('.vex-custom-container .vex-custom-block input[name="keyword"]').val(value_hash.keyword.join(' ')).change();
+          e.val(value_hash.keyword.join(' ')).change();
         }
-        $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
+        e.focus();
     };
 
     // Register click event

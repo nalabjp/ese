@@ -171,7 +171,7 @@
 
         var conditions = [];
         Object.keys(data).forEach(function(key) {
-            var val = replace_to_half_space(this[key].trim());
+            let val = replace_to_half_space(this[key].trim());
             switch(key) {
                 case 'wip':
                 case 'kind':
@@ -182,13 +182,19 @@
                     conditions.push(key + ':' + val);
                     break;
                 case 'keyword':
-                    for(let w of val.split(' ').reverse()) {
-                        conditions.unshift(w);
+                    for(let v of val.split(' ').reverse()) {
+                        conditions.unshift(v);
                     }
                     break;
                 default:
-                    for(let w of val.split(' ')) {
-                        conditions.push(key + ':' + w);
+                    for(let v of val.split(' ')) {
+                        if (v.startsWith('-')) {
+                            let k2 = v.substr(0, 1) + key;
+                            let v2 = v.substr(1);
+                            conditions.push(k2 + ':' + v2);
+                        } else {
+                            conditions.push(key + ':' + v);
+                        }
                     }
             }
         }, data);
@@ -239,7 +245,13 @@
                         value_hash[kv[0]] = kv[1];
                         break;
                     default:
-                        value_hash[kv[0]].push(kv[1]);
+                        if (kv[0].startsWith('-')) {
+                            let v = kv[0].substr(0, 1) + kv[1];
+                            let k = kv[0].substr(1);
+                            value_hash[k].push(v);
+                        } else {
+                            value_hash[kv[0]].push(kv[1]);
+                        }
                 }
             } else {
                 value_hash.keyword.push(chunk);
@@ -291,3 +303,4 @@
         assign_input_values();
     });
 })();
+

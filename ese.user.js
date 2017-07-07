@@ -197,6 +197,11 @@
         form.submit();
     };
 
+    // Bootstrap tooltip
+    var enable_tooltip = function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    };
+
     // Assign input values
     var assign_input_values = function() {
         let input_values = replace_to_only_colon(replace_to_half_space($('#search_input').val())).split(' ');
@@ -281,7 +286,7 @@
         });
 
         // Enable after the element that configured Bootstrap tooltip defined
-        $('[data-toggle="tooltip"]').tooltip();
+        enable_tooltip();
 
         assign_input_values();
     });

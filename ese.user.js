@@ -11,6 +11,7 @@
 // @resource     vexTheme https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex-theme-default.min.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
+// @grant        GM_setValue
 // ==/UserScript==
 
 (function() {
@@ -158,15 +159,13 @@
                 '<input value="false" name="sharing" type="radio" id="sharing_false" /><label for="sharing_false">false</label>' +
                 '<input value="none" name="sharing" type="radio" id="sharing_none" /><label for="sharing_none">none</label>',
             '</div>',
+            '<input type="hidden" name="ese_form_save" id="ese_form_save" />',
         '</div>'
     ].join(' ');
 
-    // vex callback function
-    let submitting = function (data) {
-        if (!data) return console.log('Cancelled');
-
+    let build_condition = function(hash) {
         let conditions = [];
-        Object.keys(data).forEach(function(key) {
+        Object.keys(hash).forEach(function(key) {
             let val = replace_to_half_space(this[key].trim());
             switch(key) {
                 case 'wip':
@@ -193,9 +192,16 @@
                         }
                     }
             }
-        }, data);
+        }, hash);
 
-        $('#search_input').val(conditions.join(' '));
+        return conditions.join(' ');
+    };
+
+    // vex callback function
+    let submitting = function (data) {
+        if (!data) return console.log('Cancelled');
+
+        $('#search_input').val(build_condition(data));
         form.submit();
     };
 
@@ -301,11 +307,31 @@
         $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
     };
 
+    // Save current ese form
+    // TODO: Should we use brwoserify for using 'form-serialize'?
+    let before_save_values = function() {
+        $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container #ese_form_save').val('1');
+    };
+    let save_values = function(data) {
+        GM_setValue('ese_form_data', build_condition(data));
+    };
+
     // vex buttons
     let buttons = [
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
+        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory', text: 'Save', click: before_save_values }),
     ];
+
+    // For Save
+    let before_close = function(arg) {
+        if (this.value.ese_form_save === '1') {
+            $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container #ese_form_save').val('');
+            delete this.value.ese_form_save;
+            save_values(this.value);
+            return false;
+        }
+    };
 
     // After open dialog callback
     let after_open = function() {
@@ -322,6 +348,7 @@
             buttons: buttons,
             callback: submitting,
             afterOpen: after_open,
+            beforeClose: before_close,
         });
     };
 

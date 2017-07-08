@@ -290,19 +290,22 @@
         e.focus();
     };
 
+    // After open dialog callback
+    var after_open = function() {
+        // Enable after the element that configured Bootstrap tooltip defined
+        enable_tooltip();
+
+        assign_input_values();
+    };
+
     // Register click event
     ese.click(function(){
         vex.dialog.open({
             message: 'Advanced Search',
             input: dialog,
             buttons: buttons,
-            callback: submitting
+            callback: submitting,
+            afterOpen: after_open,
         });
-
-        // Enable after the element that configured Bootstrap tooltip defined
-        enable_tooltip();
-
-        assign_input_values();
     });
 })();
-

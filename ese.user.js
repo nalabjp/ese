@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      0.5.0
+// @version      0.6.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
+// @require      https://cdnjs.cloudflare.com/ajax/libs/keymaster/1.6.1/keymaster.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/js/vex.combined.min.js
 // @resource     vexCSS https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex.min.css
 // @resource     vexTheme https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex-theme-default.min.css
@@ -313,8 +314,7 @@
         assign_input_values();
     };
 
-    // Register click event
-    ese.click(function(){
+    let open_ese_dialog = function(){
         vex.dialog.open({
             message: 'Advanced Search',
             input: dialog,
@@ -322,5 +322,15 @@
             callback: submitting,
             afterOpen: after_open,
         });
-    });
+    };
+
+    let shortcut_ese_dialog = function() {
+        open_ese_dialog();
+        return false;
+    };
+
+    // Register click event
+    ese.click(open_ese_dialog);
+    // Register shortcut
+    key('/', shortcut_ese_dialog);
 })();

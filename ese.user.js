@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      0.4.0
+// @version      0.5.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -160,9 +160,24 @@
         '</div>'
     ].join(' ');
 
+    var clear_ese_form = function() {
+        for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container .vex-custom-block input')) {
+            switch(e.type) {
+                case 'text':
+                    e.value = '';
+                    break;
+                case 'radio':
+                    e.checked = false;
+                    break;
+            }
+        }
+        $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
+    };
+
     // vex buttons
     var buttons = [
-        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' })
+        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
     ];
 
     // vex callback function

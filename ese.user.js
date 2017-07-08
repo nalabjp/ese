@@ -23,15 +23,15 @@
     GM_addStyle(vexTheme);
     vex.defaultOptions.className = 'vex-theme-default';
 
-    // functions
-    function replace_to_half_space(str) {
+    // Utilities
+    let replace_to_half_space = function(str) {
         // em space to half space
         return str.replace(/　/g, ' ');
-    }
+    };
 
-    function replace_to_only_colon(str) {
+    let replace_to_only_colon = function(str) {
         return str.replace(/: +/g, ':');
-    }
+    };
 
     // Add ESE element after form element
     let form = $('form.navbar-form.navbar-sub__navbar-form');

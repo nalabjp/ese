@@ -161,26 +161,6 @@
         '</div>'
     ].join(' ');
 
-    let clear_ese_form = function() {
-        for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container .vex-custom-block input')) {
-            switch(e.type) {
-                case 'text':
-                    e.value = '';
-                    break;
-                case 'radio':
-                    e.checked = false;
-                    break;
-            }
-        }
-        $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
-    };
-
-    // vex buttons
-    let buttons = [
-        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
-        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
-    ];
-
     // vex callback function
     let submitting = function (data) {
         if (!data) return console.log('Cancelled');
@@ -305,6 +285,27 @@
         }
         e.focus();
     };
+
+    // Clear all values in ese elements
+    let clear_ese_form = function() {
+        for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container .vex-custom-block input')) {
+            switch(e.type) {
+                case 'text':
+                    e.value = '';
+                    break;
+                case 'radio':
+                    e.checked = false;
+                    break;
+            }
+        }
+        $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
+    };
+
+    // vex buttons
+    let buttons = [
+        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
+    ];
 
     // After open dialog callback
     let after_open = function() {

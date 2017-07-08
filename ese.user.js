@@ -33,12 +33,12 @@
     }
 
     // Add ESE element after form element
-    var form = $('form.navbar-form.navbar-sub__navbar-form');
-    var ese = $('<i class="fa fa-search-plus" aria-hidden="true id="ese" style="font-size: 24px; margin-top: 17px; margin-left: 10px; color: rgba(0, 0, 0, 0.2)"></i>');
+    let form = $('form.navbar-form.navbar-sub__navbar-form');
+    let ese = $('<i class="fa fa-search-plus" aria-hidden="true id="ese" style="font-size: 24px; margin-top: 17px; margin-left: 10px; color: rgba(0, 0, 0, 0.2)"></i>');
     form.after(ese);
 
     // vex dialog
-    var dialog = [
+    let dialog = [
         '<style>',
             '.vex-custom-container {',
                 'margin-top: 20px;',
@@ -160,7 +160,7 @@
         '</div>'
     ].join(' ');
 
-    var clear_ese_form = function() {
+    let clear_ese_form = function() {
         for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container .vex-custom-block input')) {
             switch(e.type) {
                 case 'text':
@@ -175,16 +175,16 @@
     };
 
     // vex buttons
-    var buttons = [
+    let buttons = [
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
     ];
 
     // vex callback function
-    var submitting = function (data) {
+    let submitting = function (data) {
         if (!data) return console.log('Cancelled');
 
-        var conditions = [];
+        let conditions = [];
         Object.keys(data).forEach(function(key) {
             let val = replace_to_half_space(this[key].trim());
             switch(key) {
@@ -219,12 +219,12 @@
     };
 
     // Bootstrap tooltip
-    var enable_tooltip = function() {
+    let enable_tooltip = function() {
         $('[data-toggle="tooltip"]').tooltip();
     };
 
     // Assign input values
-    var assign_input_values = function() {
+    let assign_input_values = function() {
         let input_values = replace_to_only_colon(replace_to_half_space($('#search_input').val())).split(' ');
         let value_hash = {
             keyword: [],
@@ -306,7 +306,7 @@
     };
 
     // After open dialog callback
-    var after_open = function() {
+    let after_open = function() {
         // Enable after the element that configured Bootstrap tooltip defined
         enable_tooltip();
 

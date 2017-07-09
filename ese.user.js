@@ -211,7 +211,7 @@
     };
 
     // Assign input values
-    let assign_input_values = function() {
+    let assign_form_values = function() {
         let input_values = replace_to_only_colon(replace_to_half_space($('#search_input').val())).split(' ');
         let value_hash = {
             keyword: [],
@@ -338,7 +338,7 @@
         // Enable after the element that configured Bootstrap tooltip defined
         enable_tooltip();
 
-        assign_input_values();
+        assign_form_values();
     };
 
     let open_ese_dialog = function(){

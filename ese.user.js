@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      0.6.0
+// @version      0.7.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -12,6 +12,7 @@
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 
 (function() {
@@ -316,11 +317,18 @@
         GM_setValue('ese_form_data', build_condition(data));
     };
 
+    // Load form data
+    let load_values = function() {
+        clear_ese_form();
+        assign_form_values(GM_getValue('ese_form_data', ''));
+    };
+
     // vex buttons
     let buttons = [
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory', text: 'Save', click: before_save_values }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Load', click: load_values }),
     ];
 
     // For Save

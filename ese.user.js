@@ -331,6 +331,7 @@
             save_values(this.value);
             return false;
         }
+        return true;
     };
 
     // After open dialog callback

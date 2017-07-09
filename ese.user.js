@@ -271,7 +271,7 @@
                 case 'watched':
                 case 'sharing':
                     if (val !== '') {
-                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]#' + key + '_' + val).attr('checked', true);
+                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]#' + key + '_' + val).prop('checked', true);
                     }
                     break;
                 default:

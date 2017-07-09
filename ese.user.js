@@ -324,8 +324,8 @@
     ];
 
     // For Save
-    let before_close = function(arg) {
-        if (this.value.ese_form_save === '1') {
+    let before_close = function() {
+        if (typeof this.value !== "undefined" && this.value.ese_form_save === '1') {
             $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container #ese_form_save').val('');
             delete this.value.ese_form_save;
             save_values(this.value);

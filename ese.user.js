@@ -164,9 +164,9 @@
         '</div>'
     ].join(' ');
 
-    let build_condition = function(hash) {
+    let build_condition = function(value_hash) {
         let conditions = [];
-        Object.keys(hash).forEach(function(key) {
+        Object.keys(value_hash).forEach(function(key) {
             let val = replace_to_half_space(this[key].trim());
             switch(key) {
                 case 'wip':
@@ -193,16 +193,16 @@
                         }
                     }
             }
-        }, hash);
+        }, value_hash);
 
         return conditions.join(' ');
     };
 
     // vex callback function
-    let submitting = function (data) {
-        if (!data) return console.log('Cancelled');
+    let submitting = function (value_hash) {
+        if (!value_hash) return console.log('Cancelled');
 
-        $('#search_input').val(build_condition(data));
+        $('#search_input').val(build_condition(value_hash));
         form.submit();
     };
 
@@ -212,8 +212,8 @@
     };
 
     // Assign input values
-    let assign_form_values = function(data) {
-        let input_values = replace_to_only_colon(replace_to_half_space(data)).split(' ');
+    let assign_form_values = function(search_word) {
+        let word_list = replace_to_only_colon(replace_to_half_space(search_word)).split(' ');
         let value_hash = {
             keyword: [],
             title: [],
@@ -236,7 +236,7 @@
             sharing: '',
         };
 
-        for(let chunk of input_values) {
+        for(let chunk of word_list) {
             if (chunk.includes(':')) {
                 let kv = chunk.split(':', 2);
                 switch(kv[0]) {
@@ -313,8 +313,8 @@
     let before_save_values = function() {
         $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container #ese_form_save').val('1');
     };
-    let save_values = function(data) {
-        GM_setValue('ese_form_data', build_condition(data));
+    let save_values = function(value_hash) {
+        GM_setValue('ese_form_data', build_condition(value_hash));
     };
 
     // Load form data

@@ -47,7 +47,18 @@
     form.after(ese);
 
     // vex dialog messege
-    let message = '<span class="ese-form-title">Advanced Search</span><span class="ese-form-notification" id="ese-form-notification"></span>';
+    let message = [
+        '<span class="ese-form-title">Advanced Search</span>',
+        '<span class="ese-form-nav">',
+            '<span id="ese-form-notification"></span>',
+            '<span id="ese-form-load-icon">',
+                '<i class="fa fa-star-o ese-form-nav-icon" aria-hidden="true"></i>',
+            '</span>',
+            '<span id="ese-form-save-icon">',
+                '<i class="fa fa-star ese-form-nav-icon" aria-hidden="true"></i>',
+            '</span>',
+        '</span>',
+    ].join('');
 
     // vex dialog
     let dialog = [
@@ -56,8 +67,12 @@
                 'font-weight: bold;',
                 'font-size: 1.4em;',
             '}',
-            '.ese-form-notification {',
+            '.ese-form-nav {',
                 'float: right;',
+            '}',
+            '.ese-form-nav-icon {',
+                'font-size: 1.4em;',
+                'margin-left: 10px;',
             '}',
             '.ese-form-container {',
                 'margin-top: 20px;',
@@ -69,6 +84,9 @@
             '.ese-form-block input[type="radio"] {',
                 'margin-left: 10px;',
                 'margin-right: 10px;',
+            '}',
+            '.ese-form-save-button, .ese-form-load-button {',
+                'display: none;',
             '}',
             '.vex.vex-theme-default {',
                 'padding-top: 100px;',
@@ -178,7 +196,7 @@
             '</div>',
             '<input type="hidden" name="ese_form_save" id="ese_form_save" />',
         '</div>'
-    ].join(' ');
+    ].join('');
 
     let build_condition = function(value_hash) {
         let conditions = [];
@@ -341,12 +359,24 @@
         notify('Load Form');
     };
 
+    let enable_save_action = function() {
+        $('#ese-form-save-icon').click(function() {
+            $('.ese-form-save-button').click();
+        });
+    };
+
+    let enable_load_action = function() {
+        $('#ese-form-load-icon').click(function() {
+            $('.ese-form-load-button').click();
+        });
+    };
+
     // vex buttons
     let buttons = [
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
-        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory', text: 'Save', click: before_save_values }),
-        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Load', click: load_values }),
+        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory ese-form-save-button', text: 'Save', click: before_save_values }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-form-load-button', text: 'Load', click: load_values }),
     ];
 
     // For Save
@@ -364,6 +394,9 @@
     let after_open = function() {
         // Enable after the element that configured Bootstrap tooltip defined
         enable_tooltip();
+
+        enable_save_action();
+        enable_load_action();
 
         assign_form_values($('#search_input').val());
     };

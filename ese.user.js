@@ -26,12 +26,12 @@
     vex.defaultOptions.className = 'vex-theme-default';
 
     // Utilities
-    let replace_to_half_space = function(str) {
+    let replaceToHalfSpace = function(str) {
         // em space to half space
         return str.replace(/　/g, ' ');
     };
 
-    let replace_to_only_colon = function(str) {
+    let replaceToOnlyColon = function(str) {
         return str.replace(/: +/g, ':');
     };
 
@@ -198,10 +198,10 @@
         '</div>'
     ].join('');
 
-    let build_condition = function(value_hash) {
+    let buildCondition = function(valueHash) {
         let conditions = [];
-        Object.keys(value_hash).forEach(function(key) {
-            let val = replace_to_half_space(this[key].trim());
+        Object.keys(valueHash).forEach(function(key) {
+            let val = replaceToHalfSpace(this[key].trim());
             switch(key) {
                 case 'wip':
                 case 'kind':
@@ -227,28 +227,28 @@
                         }
                     }
             }
-        }, value_hash);
+        }, valueHash);
 
         return conditions.join(' ');
     };
 
     // vex callback function
-    let submitting = function (value_hash) {
-        if (!value_hash) return console.log('Cancelled');
+    let submitting = function (valueHash) {
+        if (!valueHash) return console.log('Cancelled');
 
-        $('#search_input').val(build_condition(value_hash));
+        $('#search_input').val(buildCondition(valueHash));
         form.submit();
     };
 
     // Bootstrap tooltip
-    let enable_tooltip = function() {
+    let enableTooltip = function() {
         $('[data-toggle="tooltip"]').tooltip();
     };
 
     // Assign input values
-    let assign_form_values = function(search_word) {
-        let word_list = replace_to_only_colon(replace_to_half_space(search_word)).split(' ');
-        let value_hash = {
+    let assignFormValues = function(searchWord) {
+        let wordList = replaceToOnlyColon(replaceToHalfSpace(searchWord)).split(' ');
+        let valueHash = {
             keyword: [],
             title: [],
             body: [],
@@ -270,7 +270,7 @@
             sharing: '',
         };
 
-        for(let chunk of word_list) {
+        for(let chunk of wordList) {
             if (chunk.includes(':')) {
                 let kv = chunk.split(':', 2);
                 switch(kv[0]) {
@@ -279,23 +279,23 @@
                     case 'starred':
                     case 'watched':
                     case 'sharing':
-                        value_hash[kv[0]] = kv[1];
+                        valueHash[kv[0]] = kv[1];
                         break;
                     default:
                         if (kv[0].startsWith('-')) {
                             let v = kv[0].substr(0, 1) + kv[1];
                             let k = kv[0].substr(1);
-                            value_hash[k].push(v);
+                            valueHash[k].push(v);
                         } else {
-                            value_hash[kv[0]].push(kv[1]);
+                            valueHash[kv[0]].push(kv[1]);
                         }
                 }
             } else {
-                value_hash.keyword.push(chunk);
+                valueHash.keyword.push(chunk);
             }
         }
 
-        Object.keys(value_hash).forEach(function(key) {
+        Object.keys(valueHash).forEach(function(key) {
             let val = this[key];
             switch(key) {
                 case 'keyword':
@@ -316,19 +316,19 @@
                         e.val(val.join(' ')).change();
                     }
             }
-        }, value_hash);
+        }, valueHash);
 
         // Specific for keyword
         let e = $('.ese-form-container .ese-form-block input[name="keyword"]');
         e.blur();
-        if (value_hash.keyword.length > 0) {
-          e.val(value_hash.keyword.join(' ')).change();
+        if (valueHash.keyword.length > 0) {
+          e.val(valueHash.keyword.join(' ')).change();
         }
         e.focus();
     };
 
     // Clear all values in ese elements
-    let clear_ese_form = function() {
+    let clearEseForm = function() {
         for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container .ese-form-block input')) {
             switch(e.type) {
                 case 'text':
@@ -344,28 +344,28 @@
 
     // Save current ese form
     // TODO: Should we use brwoserify for using 'form-serialize'?
-    let before_save_values = function() {
+    let beforeSaveValues = function() {
         $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container #ese_form_save').val('1');
     };
-    let save_values = function(value_hash) {
-        GM_setValue('ese_form_data', build_condition(value_hash));
+    let saveValues = function(valueHash) {
+        GM_setValue('ese_form_data', buildCondition(valueHash));
         notify('Save Form');
     };
 
     // Load form data
-    let load_values = function() {
-        clear_ese_form();
-        assign_form_values(GM_getValue('ese_form_data', ''));
+    let loadValues = function() {
+        clearEseForm();
+        assignFormValues(GM_getValue('ese_form_data', ''));
         notify('Load Form');
     };
 
-    let enable_save_action = function() {
+    let enableSaveAction = function() {
         $('#ese-form-save-icon').click(function() {
             $('.ese-form-save-button').click();
         });
     };
 
-    let enable_load_action = function() {
+    let enableLoadAction = function() {
         $('#ese-form-load-icon').click(function() {
             $('.ese-form-load-button').click();
         });
@@ -374,51 +374,51 @@
     // vex buttons
     let buttons = [
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
-        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clear_ese_form }),
-        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory ese-form-save-button', text: 'Save', click: before_save_values }),
-        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-form-load-button', text: 'Load', click: load_values }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clearEseForm }),
+        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory ese-form-save-button', text: 'Save', click: beforeSaveValues }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-form-load-button', text: 'Load', click: loadValues }),
     ];
 
     // For Save
-    let before_close = function() {
+    let beforeClose = function() {
         if (typeof this.value !== "undefined" && this.value.ese_form_save === '1') {
             $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container #ese_form_save').val('');
             delete this.value.ese_form_save;
-            save_values(this.value);
+            saveValues(this.value);
             return false;
         }
         return true;
     };
 
     // After open dialog callback
-    let after_open = function() {
+    let afterOpen = function() {
         // Enable after the element that configured Bootstrap tooltip defined
-        enable_tooltip();
+        enableTooltip();
 
-        enable_save_action();
-        enable_load_action();
+        enableSaveAction();
+        enableLoadAction();
 
-        assign_form_values($('#search_input').val());
+        assignFormValues($('#search_input').val());
     };
 
-    let open_ese_dialog = function(){
+    let openEseDialog = function(){
         vex.dialog.open({
             unsafeMessage: message,
             input: dialog,
             buttons: buttons,
             callback: submitting,
-            afterOpen: after_open,
-            beforeClose: before_close,
+            afterOpen: afterOpen,
+            beforeClose: beforeClose,
         });
     };
 
-    let shortcut_ese_dialog = function() {
-        open_ese_dialog();
+    let shortcutEseDialog = function() {
+        openEseDialog();
         return false;
     };
 
     // Register click event
-    ese.click(open_ese_dialog);
+    ese.click(openEseDialog);
     // Register shortcut
-    key('/', shortcut_ese_dialog);
+    key('/', shortcutEseDialog);
 })();

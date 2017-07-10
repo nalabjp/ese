@@ -43,14 +43,14 @@
     // vex dialog
     let dialog = [
         '<style>',
-            '.vex-custom-container {',
+            '.ese-form-container {',
                 'margin-top: 20px;',
             '}',
-            '.vex-custom-block {',
+            '.ese-form-block {',
                 'margin-top: 5px;',
                 'margin-bottom: 5px;',
             '}',
-            '.vex-custom-block input[type="radio"] {',
+            '.ese-form-block input[type="radio"] {',
                 'margin-left: 10px;',
                 'margin-right: 10px;',
             '}',
@@ -73,88 +73,88 @@
                 'box-shadow: inset 0 0 0 2px #0a9b94;',
             '}',
         '</style>',
-        '<div class="vex-custom-container">',
-            '<div class="vex-custom-block">',
+        '<div class="ese-form-container">',
+            '<div class="ese-form-block">',
                 '<label>キーワード</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名 or カテゴリ or 本文にkeywordを含むものを絞り込み"></i>' +
                 '<input name="keyword" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>記事名</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名にkeywordを含むものを絞り込み"></i>' +
                 '<input name="title" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>記事本文</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事本文にkeywordを含むものを絞り込み"></i>' +
                 '<input name="body" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>記事作成者</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事作成者のscreen_nameで絞り込み"></i>' +
                 '<input name="user" type="text" placeholder="screen_name" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>Star</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="自分がStarしている記事で絞り込み"></i><br />' +
                 '<input value="true" name="starred" type="radio" id="starred_true" /><label for="starred_true">true</label>' +
                 '<input value="false" name="starred" type="radio" id="starred_false" /><label for="starred_false">false</label>' +
                 '<input value="none" name="starred" type="radio" id="starred_none" /><label for="starred_none">none</label>',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>Watch</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="自分がWatchしている記事で絞り込み"></i><br />' +
                 '<input value="true" name="watched" type="radio" id="watched_true" /><label for="watched_true">true</label>' +
                 '<input value="false" name="watched" type="radio" id="watched_false" /><label for="watched_false">false</label>' +
                 '<input value="none" name="watched" type="radio" id="watched_none" /><label for="watched_none">none</label>',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>WIP</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事のwip状態で絞り込み"></i><br />' +
                 '<input value="true" name="wip" type="radio" id="wip_true" /><label for="wip_true">true</label>' +
                 '<input value="false" name="wip" type="radio" id="wip_false" /><label for="wip_false">false</label>' +
                 '<input value="none" name="wip" type="radio" id="wip_none" /><label for="wip_none">none</label>',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>種類</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事の種類で絞り込み"></i><br />' +
                 '<input value="stock" name="kind" type="radio" id="kind_stock" /><label for="kind_stock">stock</label>' +
                 '<input value="flow" name="kind" type="radio" id="kind_flow" /><label for="kind_flow">flow</label>' +
                 '<input value="none" name="kind" type="radio" id="kind_both" /><label for="kind_both">both</label>',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>カテゴリ(部分一致)</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="カテゴリ名にkeywordを含むものを絞り込み"></i>' +
                 '<input name="category" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>カテゴリ(前方一致)</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="カテゴリ名がkeywordから始まるものを絞り込み"></i>' +
                 '<input name="in" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>カテゴリ(完全一致)</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="カテゴリ名がkeywordであるものを絞り込み"></i>' +
                 '<input name="on" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>タグ</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="tagタグが付いているものを絞り込み"></i>' +
                 '<input name="tag" type="text" placeholder="tag" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>コメント</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="コメント本文にkeywordが含まれる記事を絞り込み"></i>' +
                 '<input name="comment" type="text" placeholder="keyword" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>Star数</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="Star数で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
                 '<input name="stars" type="text" placeholder="number" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>Watch数</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="Watch数で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
                 '<input name="watches" type="text" placeholder="number" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>コメント数</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="コメント数で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
                 '<input name="comments" type="text" placeholder="number" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>作成日</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="作成日で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
                 '<input name="created" type="text" placeholder="YYYY-MM-DD" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>更新日</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="更新日で記事を絞り込み（不等号[>, <, >=, <=]が使えます）"></i>' +
                 '<input name="updated" type="text" placeholder="YYYY-MM-DD" />',
             '</div>',
-            '<div class="vex-custom-block">',
+            '<div class="ese-form-block">',
                 '<label>外部公開</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事の外部公開状態で絞り込み"></i><br />' +
                 '<input value="true" name="sharing" type="radio" id="sharing_true" /><label for="sharing_true">true</label>' +
                 '<input value="false" name="sharing" type="radio" id="sharing_false" /><label for="sharing_false">false</label>' +
@@ -272,12 +272,12 @@
                 case 'watched':
                 case 'sharing':
                     if (val !== '') {
-                        $('.vex-custom-container .vex-custom-block input[name="' + key + '"]#' + key + '_' + val).prop('checked', true);
+                        $('.ese-form-container .ese-form-block input[name="' + key + '"]#' + key + '_' + val).prop('checked', true);
                     }
                     break;
                 default:
                     if (val.length > 0) {
-                        let e = $('.vex-custom-container .vex-custom-block input[name="' + key + '"]');
+                        let e = $('.ese-form-container .ese-form-block input[name="' + key + '"]');
                         e.focus();
                         e.val(val.join(' ')).change();
                     }
@@ -285,7 +285,7 @@
         }, value_hash);
 
         // Specific for keyword
-        let e = $('.vex-custom-container .vex-custom-block input[name="keyword"]');
+        let e = $('.ese-form-container .ese-form-block input[name="keyword"]');
         e.blur();
         if (value_hash.keyword.length > 0) {
           e.val(value_hash.keyword.join(' ')).change();
@@ -295,7 +295,7 @@
 
     // Clear all values in ese elements
     let clear_ese_form = function() {
-        for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container .vex-custom-block input')) {
+        for(let e of $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container .ese-form-block input')) {
             switch(e.type) {
                 case 'text':
                     e.value = '';
@@ -305,13 +305,13 @@
                     break;
             }
         }
-        $('.vex-custom-container .vex-custom-block input[name="keyword"]').focus();
+        $('.ese-form-container .ese-form-block input[name="keyword"]').focus();
     };
 
     // Save current ese form
     // TODO: Should we use brwoserify for using 'form-serialize'?
     let before_save_values = function() {
-        $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container #ese_form_save').val('1');
+        $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container #ese_form_save').val('1');
     };
     let save_values = function(data) {
         GM_setValue('ese_form_data', build_condition(data));
@@ -334,7 +334,7 @@
     // For Save
     let before_close = function() {
         if (typeof this.value !== "undefined" && this.value.ese_form_save === '1') {
-            $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .vex-custom-container #ese_form_save').val('');
+            $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-form-container #ese_form_save').val('');
             delete this.value.ese_form_save;
             save_values(this.value);
             return false;

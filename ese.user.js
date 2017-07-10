@@ -35,14 +35,30 @@
         return str.replace(/: +/g, ':');
     };
 
+    let notify = function(text) {
+        if (typeof text === 'undefined') return false;
+        $('#ese-form-notification').text(text + ' (\\( ⁰⊖⁰)/)');
+        setTimeout(function() { $('#ese-form-notification').text(''); }, 3000);
+    };
+
     // Add ESE element after form element
     let form = $('form.navbar-form.navbar-sub__navbar-form');
     let ese = $('<i class="fa fa-search-plus" aria-hidden="true id="ese" style="font-size: 24px; margin-top: 17px; margin-left: 10px; color: rgba(0, 0, 0, 0.2)"></i>');
     form.after(ese);
 
+    // vex dialog messege
+    let message = '<span class="ese-form-title">Advanced Search</span><span class="ese-form-notification" id="ese-form-notification"></span>';
+
     // vex dialog
     let dialog = [
         '<style>',
+            '.ese-form-title {',
+                'font-weight: bold;',
+                'font-size: 1.4em;',
+            '}',
+            '.ese-form-notification {',
+                'float: right;',
+            '}',
             '.ese-form-container {',
                 'margin-top: 20px;',
             '}',
@@ -54,9 +70,9 @@
                 'margin-left: 10px;',
                 'margin-right: 10px;',
             '}',
-            '.vex.vex-theme-default .vex-content .vex-dialog-message {',
-                'font-weight: bold;',
-                'font-size: 1.4em;',
+            '.vex.vex-theme-default {',
+                'padding-top: 100px;',
+                'padding-bottom: 100px;',
             '}',
             '.vex.vex-theme-default .vex-content {',
                 'background: #efede0;',
@@ -315,12 +331,14 @@
     };
     let save_values = function(value_hash) {
         GM_setValue('ese_form_data', build_condition(value_hash));
+        notify('Save Form');
     };
 
     // Load form data
     let load_values = function() {
         clear_ese_form();
         assign_form_values(GM_getValue('ese_form_data', ''));
+        notify('Load Form');
     };
 
     // vex buttons
@@ -352,7 +370,7 @@
 
     let open_ese_dialog = function(){
         vex.dialog.open({
-            message: 'Advanced Search',
+            unsafeMessage: message,
             input: dialog,
             buttons: buttons,
             callback: submitting,

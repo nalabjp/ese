@@ -13,7 +13,7 @@ ese(esa search extension)は[esa.io](https://esa.io)の非公式な検索拡張�
 
 * [Tampermonkey](http://tampermonkey.net)をブラウザにインストールする
 * ese.user.jsのRAWを開く
-    * [latest](https://github.com/nalabjp/ese/raw/v0.7.0/ese.user.js)
+    * [stable](https://github.com/nalabjp/ese/raw/v0.7.0/ese.user.js)
     * [master](https://github.com/nalabjp/ese/raw/master/ese.user.js)
 
 ## Features

@@ -76,6 +76,8 @@
                         words.unshift(v);
                     }
                     break;
+                case 'sort':
+                    break;
                 default:
                     for(let v of val.split(' ')) {
                         if (v.startsWith('-')) {
@@ -91,6 +93,14 @@
 
         return words.join(' ');
     };
+
+    let buildSortKey = function(valueHash) {
+      return valueHash.sort.split('-')[0];
+    }
+
+    let buildSortOrder = function(valueHash) {
+      return valueHash.sort.split('-')[1];
+    }
 
     // Assign values to form
     let assignFormValues = function(searchWord) {
@@ -115,6 +125,7 @@
             created: [],
             updated: [],
             sharing: '',
+            sort: '',
         };
 
         for(let chunk of wordList) {
@@ -173,6 +184,10 @@
         }
         e.focus();
     };
+
+    let assignSortValues = function(sort_value) {
+      $('.ese-container .ese-block select[name="sort"]').val(sort_value);
+    }
 
     // Clear all values in form
     let clearForm = function() {
@@ -375,6 +390,19 @@
                 '<input value="false" name="sharing" type="radio" id="sharing_false" /><label for="sharing_false">false</label>' +
                 '<input value="none" name="sharing" type="radio" id="sharing_none" /><label for="sharing_none">none</label>',
             '</div>',
+            '<div class="ese-block">',
+                '<label>ソート</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事のソート順を指定"></i><br />' +
+                '<select class="form-control" name="sort">' +
+                '<option selected="selected" value="">Best match</option>' +
+                '<option value="created-desc">Newest</option>' +
+                '<option value="created-asc">Oldest</option>' +
+                '<option value="updated-desc">Recently updated</option>' +
+                '<option value="updated-asc">Least recently updated</option>' +
+                '<option value="stars-desc">Most starred</option>' +
+                '<option value="watches-desc">Most watched</option>' +
+                '<option value="comments-desc">Most commented</option>' +
+                '</select>',
+            '</div>',
             '<input type="hidden" name="ese_before_save" id="ese_before_save" />',
         '</div>'
     ].join('');
@@ -390,8 +418,9 @@
     // vex dialog callback
     let callback = function (valueHash) {
         if (!valueHash) return console.log('Cancelled');
-
         $('#search_input').val(buildSearchWord(valueHash));
+        $('#search_input_sort').val(buildSortKey(valueHash));
+        $('#search_input_order').val(buildSortOrder(valueHash));
         console.log(esaForm);
         esaForm.submit();
     };
@@ -405,6 +434,7 @@
         bindLoadButton();
 
         assignFormValues($('#search_input').val());
+        assignSortValues($('#search_sort').val());
     };
 
     // vex dialog beforeClose

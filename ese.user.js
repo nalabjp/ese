@@ -305,6 +305,19 @@
         '</style>',
         '<div class="ese-container">',
             '<div class="ese-block">',
+                '<label>ソート</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事のソート順を指定"></i><br />' +
+                '<select class="form-control" name="sort">' +
+                '<option selected="selected" value="">Best match</option>' +
+                '<option value="created-desc">Newest</option>' +
+                '<option value="created-asc">Oldest</option>' +
+                '<option value="updated-desc">Recently updated</option>' +
+                '<option value="updated-asc">Least recently updated</option>' +
+                '<option value="stars-desc">Most starred</option>' +
+                '<option value="watches-desc">Most watched</option>' +
+                '<option value="comments-desc">Most commented</option>' +
+                '</select>',
+            '</div>',
+            '<div class="ese-block">',
                 '<label>キーワード</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名 or カテゴリ or 本文にkeywordを含むものを絞り込み"></i>' +
                 '<input name="keyword" type="text" placeholder="keyword" />',
             '</div>',
@@ -390,19 +403,6 @@
                 '<input value="false" name="sharing" type="radio" id="sharing_false" /><label for="sharing_false">false</label>' +
                 '<input value="none" name="sharing" type="radio" id="sharing_none" /><label for="sharing_none">none</label>',
             '</div>',
-            '<div class="ese-block">',
-                '<label>ソート</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事のソート順を指定"></i><br />' +
-                '<select class="form-control" name="sort">' +
-                '<option selected="selected" value="">Best match</option>' +
-                '<option value="created-desc">Newest</option>' +
-                '<option value="created-asc">Oldest</option>' +
-                '<option value="updated-desc">Recently updated</option>' +
-                '<option value="updated-asc">Least recently updated</option>' +
-                '<option value="stars-desc">Most starred</option>' +
-                '<option value="watches-desc">Most watched</option>' +
-                '<option value="comments-desc">Most commented</option>' +
-                '</select>',
-            '</div>',
             '<input type="hidden" name="ese_before_save" id="ese_before_save" />',
         '</div>'
     ].join('');
@@ -457,6 +457,7 @@
             afterOpen: afterOpen,
             beforeClose: beforeClose,
         });
+        $('.ese-container .ese-block input[name="keyword"]').focus();
     };
 
     let shortcutEse = function() {

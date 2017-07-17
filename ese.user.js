@@ -413,6 +413,7 @@
             $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-container #ese_before_save').val('');
             delete this.value.ese_before_save;
             saveValues(this.value);
+            delete this.value;
             return false;
         }
         return true;

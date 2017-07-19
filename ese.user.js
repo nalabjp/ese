@@ -82,8 +82,6 @@
         setCacheExpiredAt();
     };
     loadSuggestions();
-    let mentions = GM_getValue('ese_cache_mentions', {});
-    let tags = GM_getValue('ese_cache_tags', []);
 
     /*
      * ese
@@ -271,7 +269,7 @@
     let enableMentionSuggestion = function() {
         $('.ese-container .ese-block input[name="user"]').atwho({
             at: '@',
-            data: mentions,
+            data: GM_getValue('ese_cache_mentions', {}),
             displayTpl: '<li><span class="thumbnail-circle"><img src="${icon}" class="thumbnail__image" /></span><span style="margin-left: 10px">${screen_name}</span></li>',
             insertTpl: '${screen_name}',
             searchKey: 'search_key',
@@ -282,7 +280,7 @@
     let enableTagSuggestion = function() {
         $('.ese-container .ese-block input[name="tag"]').atwho({
             at: '#',
-            data: tags,
+            data: GM_getValue('ese_cache_tags', []),
             insertTpl: '${name}',
             limit: 50
         });

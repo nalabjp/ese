@@ -1,14 +1,17 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      1.0.0
+// @version      1.1.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
 // @require      https://cdnjs.cloudflare.com/ajax/libs/keymaster/1.6.1/keymaster.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/js/vex.combined.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.4/js/jquery.atwho.min.js
 // @resource     vexCSS https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex.min.css
 // @resource     vexTheme https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex-theme-default.min.css
+// @resource     atjsCSS https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.4/css/jquery.atwho.min.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_setValue
@@ -29,6 +32,13 @@
     vex.defaultOptions.className = 'vex-theme-default';
 
     /*
+     * Configuration for At.js
+     */
+
+    const atjsCSS = GM_getResourceText('atjsCSS');
+    GM_addStyle(atjsCSS);
+
+    /*
      * Utilities
      */
 
@@ -40,6 +50,38 @@
     let replaceToOnlyColon = function(str) {
         return str.replace(/: +/g, ':');
     };
+
+    let isExpired = function() {
+        let expired_at = GM_getValue('ese_cache_expired_at', 0);
+        if (expired_at === 0) return true;
+        return Date.now() >= expired_at;
+    };
+
+    let setCacheExpiredAt = function() {
+        let date = new Date();
+        date.setMinutes(date.getMinutes() + 15);
+        GM_setValue('ese_cache_expired_at', date.getTime());
+    };
+
+    let fetchSuggestion = function(name) {
+        $.ajax({
+            url: '/api/suggest/' + name,
+            method: 'GET',
+            success: function(resp) {
+                console.log('fetch from api: [' + name + ']');
+                GM_setValue('ese_cache_' + name, resp[name]);
+            }
+        });
+    };
+
+    let loadSuggestions = function() {
+        if (!isExpired()) return false;
+
+        fetchSuggestion('mentions');
+        fetchSuggestion('tags');
+        setCacheExpiredAt();
+    };
+    loadSuggestions();
 
     /*
      * ese
@@ -241,6 +283,26 @@
         $('[data-toggle="tooltip"]').tooltip();
     };
 
+    let enableMentionSuggestion = function() {
+        $('.ese-container .ese-block input[name="user"]').atwho({
+            at: '@',
+            data: GM_getValue('ese_cache_mentions', {}),
+            displayTpl: '<li><span class="thumbnail-circle"><img src="${icon}" class="thumbnail__image" /></span><span style="margin-left: 10px">${screen_name}</span></li>',
+            insertTpl: '${screen_name}',
+            searchKey: 'search_key',
+            limit: 50
+        });
+    };
+
+    let enableTagSuggestion = function() {
+        $('.ese-container .ese-block input[name="tag"]').atwho({
+            at: '#',
+            data: GM_getValue('ese_cache_tags', []),
+            insertTpl: '${name}',
+            limit: 50
+        });
+    };
+
     /*
      * vex dialog options
      */
@@ -332,8 +394,8 @@
                 '<input name="body" type="text" placeholder="keyword" />',
             '</div>',
             '<div class="ese-block">',
-                '<label>記事作成者</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事作成者のscreen_nameで絞り込み"></i>' +
-                '<input name="user" type="text" placeholder="screen_name" />',
+                '<label>記事作成者</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事作成者のscreen_nameで絞り込み（@で入力補完）"></i>' +
+                '<input name="user" type="text" placeholder="screen_name" autocomplete="off" />',
             '</div>',
             '<div class="ese-block">',
                 '<label>Star</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="自分がStarしている記事で絞り込み"></i><br />' +
@@ -372,8 +434,8 @@
                 '<input name="on" type="text" placeholder="keyword" />',
             '</div>',
             '<div class="ese-block">',
-                '<label>タグ</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="tagタグが付いているものを絞り込み"></i>' +
-                '<input name="tag" type="text" placeholder="tag" />',
+                '<label>タグ</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="tagタグが付いているものを絞り込み（#で入力補完）"></i>' +
+                '<input name="tag" type="text" placeholder="tag" autocomplete="off" />',
             '</div>',
             '<div class="ese-block">',
                 '<label>コメント</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="コメント本文にkeywordが含まれる記事を絞り込み"></i>' +
@@ -437,6 +499,9 @@
 
         assignFormValues($('#search_input').val());
         assignSortValues($('#search_sort').val());
+
+        enableMentionSuggestion();
+        enableTagSuggestion();
     };
 
     // vex dialog beforeClose
@@ -445,6 +510,7 @@
             $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-container #ese_before_save').val('');
             delete this.value.ese_before_save;
             saveValues(this.value);
+            delete this.value;
             return false;
         }
         return true;

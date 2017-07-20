@@ -51,6 +51,11 @@
         return str.replace(/: +/g, ':');
     };
 
+    let loaded = {
+        mentions: false,
+        tags: false
+    };
+
     let isExpired = function() {
         let expired_at = GM_getValue('ese_cache_expired_at', 0);
         if (expired_at === 0) return true;
@@ -70,12 +75,17 @@
             success: function(resp) {
                 console.log('fetch from api: [' + name + ']');
                 GM_setValue('ese_cache_' + name, resp[name]);
+                loaded[name] = true;
             }
         });
     };
 
     let loadSuggestions = function() {
-        if (!isExpired()) return false;
+        if (!isExpired()) {
+            loaded.mentions = true;
+            loaded.tags = true;
+            return;
+        }
 
         fetchSuggestion('mentions');
         fetchSuggestion('tags');
@@ -468,8 +478,19 @@
 
         assignFormValues($('#search_input').val());
 
-        enableMentionSuggestion();
-        enableTagSuggestion();
+        let mentionTimer = setInterval(function(){
+            if (loaded.mentions === true) {
+                clearInterval(mentionTimer);
+                enableMentionSuggestion();
+            }
+        }, 1000);
+
+        let tagTimer = setInterval(function(){
+            if (loaded.tags === true) {
+                clearInterval(mentionTimer);
+                enableTagSuggestion();
+            }
+        }, 1000);
     };
 
     // vex dialog beforeClose

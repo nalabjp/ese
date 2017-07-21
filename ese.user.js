@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      1.1.0
+// @version      1.1.1
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -51,6 +51,11 @@
         return str.replace(/: +/g, ':');
     };
 
+    let loaded = {
+        mentions: false,
+        tags: false
+    };
+
     let isExpired = function() {
         let expired_at = GM_getValue('ese_cache_expired_at', 0);
         if (expired_at === 0) return true;
@@ -70,20 +75,23 @@
             success: function(resp) {
                 console.log('fetch from api: [' + name + ']');
                 GM_setValue('ese_cache_' + name, resp[name]);
+                loaded[name] = true;
             }
         });
     };
 
     let loadSuggestions = function() {
-        if (!isExpired()) return false;
+        if (!isExpired()) {
+            loaded.mentions = true;
+            loaded.tags = true;
+            return;
+        }
 
         fetchSuggestion('mentions');
         fetchSuggestion('tags');
         setCacheExpiredAt();
     };
     loadSuggestions();
-    let mentions = GM_getValue('ese_cache_mentions', {});
-    let tags = GM_getValue('ese_cache_tags', []);
 
     /*
      * ese
@@ -271,7 +279,7 @@
     let enableMentionSuggestion = function() {
         $('.ese-container .ese-block input[name="user"]').atwho({
             at: '@',
-            data: mentions,
+            data: GM_getValue('ese_cache_mentions', {}),
             displayTpl: '<li><span class="thumbnail-circle"><img src="${icon}" class="thumbnail__image" /></span><span style="margin-left: 10px">${screen_name}</span></li>',
             insertTpl: '${screen_name}',
             searchKey: 'search_key',
@@ -282,7 +290,7 @@
     let enableTagSuggestion = function() {
         $('.ese-container .ese-block input[name="tag"]').atwho({
             at: '#',
-            data: tags,
+            data: GM_getValue('ese_cache_tags', []),
             insertTpl: '${name}',
             limit: 50
         });
@@ -470,8 +478,19 @@
 
         assignFormValues($('#search_input').val());
 
-        enableMentionSuggestion();
-        enableTagSuggestion();
+        let mentionTimer = setInterval(function(){
+            if (loaded.mentions === true) {
+                clearInterval(mentionTimer);
+                enableMentionSuggestion();
+            }
+        }, 1000);
+
+        let tagTimer = setInterval(function(){
+            if (loaded.tags === true) {
+                clearInterval(mentionTimer);
+                enableTagSuggestion();
+            }
+        }, 1000);
     };
 
     // vex dialog beforeClose

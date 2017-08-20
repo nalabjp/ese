@@ -147,13 +147,13 @@
     };
 
     let buildSortKey = function(valueHash) {
-      if (typeof valueHash.sort === 'undefined') return '';
-      return valueHash.sort.split('-')[0];
+        if (typeof valueHash.sort === 'undefined') return '';
+        return valueHash.sort.split('-')[0];
     };
 
     let buildSortOrder = function(valueHash) {
-      if (typeof valueHash.sort === 'undefined') return '';
-      return valueHash.sort.split('-')[1];
+        if (typeof valueHash.sort === 'undefined') return '';
+        return valueHash.sort.split('-')[1];
     };
 
     // Assign values to form

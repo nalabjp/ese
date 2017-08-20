@@ -149,12 +149,12 @@
     let buildSortKey = function(valueHash) {
       if (typeof valueHash.sort === 'undefined') return '';
       return valueHash.sort.split('-')[0];
-    }
+    };
 
     let buildSortOrder = function(valueHash) {
       if (typeof valueHash.sort === 'undefined') return '';
       return valueHash.sort.split('-')[1];
-    }
+    };
 
     // Assign values to form
     let assignFormValues = function(searchWord) {
@@ -241,7 +241,7 @@
 
     let assignSortValues = function(sort_value) {
       $('.ese-container .ese-block select[name="sort"]').val(sort_value);
-    }
+    };
 
     // Clear all values in form
     let clearForm = function() {

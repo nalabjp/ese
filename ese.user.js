@@ -356,6 +356,11 @@
                 'margin-left: 10px;',
                 'margin-right: 10px;',
             '}',
+            '.form-control.ese-select {',
+                'display: inline-block;',
+                'width: auto;',
+                'vertical-align: middle;',
+            '}',
             '.ese-save-button, .ese-load-button {',
                 'display: none;',
             '}',
@@ -378,19 +383,6 @@
             '}',
         '</style>',
         '<div class="ese-container">',
-            '<div class="ese-block">',
-                '<label>ソート</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事のソート順を指定"></i><br />' +
-                '<select class="form-control" name="sort">' +
-                '<option selected="selected" value="">Best match</option>' +
-                '<option value="created-desc">Newest</option>' +
-                '<option value="created-asc">Oldest</option>' +
-                '<option value="updated-desc">Recently updated</option>' +
-                '<option value="updated-asc">Least recently updated</option>' +
-                '<option value="stars-desc">Most starred</option>' +
-                '<option value="watches-desc">Most watched</option>' +
-                '<option value="comments-desc">Most commented</option>' +
-                '</select>',
-            '</div>',
             '<div class="ese-block">',
                 '<label>キーワード</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名 or カテゴリ or 本文にkeywordを含むものを絞り込み"></i>' +
                 '<input name="keyword" type="text" placeholder="keyword" />',
@@ -489,6 +481,21 @@
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-load-button', text: 'Load', click: loadValues }),
     ];
 
+    // sort select box
+    let sort_select = '<select class="form-control ese-select input-sm" name="sort">' +
+                          '<option selected="selected" value="">Best match</option>' +
+                          '<option value="created-desc">Newest</option>' +
+                          '<option value="created-asc">Oldest</option>' +
+                          '<option value="updated-desc">Recently updated</option>' +
+                          '<option value="updated-asc">Least recently updated</option>' +
+                          '<option value="stars-desc">Most starred</option>' +
+                          '<option value="watches-desc">Most watched</option>' +
+                          '<option value="comments-desc">Most commented</option>' +
+                      '</select>';
+    let addSortSelect = function() {
+        $('.vex-dialog-buttons').prepend(sort_select);
+    };
+
     // vex dialog callback
     let callback = function (valueHash) {
         if (!valueHash) return console.log('Cancelled');
@@ -546,6 +553,9 @@
             afterOpen: afterOpen,
             beforeClose: beforeClose,
         });
+
+        addSortSelect();
+
         $('.ese-container .ese-block input[name="keyword"]').focus();
     };
 

@@ -240,7 +240,7 @@
     };
 
     let assignSortValues = function(sort_value) {
-      $('.ese-container .ese-block select[name="sort"]').val(sort_value);
+        $('.vex-dialog-buttons select[name="sort"]').val(sort_value);
     };
 
     // Clear all values in form
@@ -494,6 +494,7 @@
                       '</select>';
     let addSortSelect = function() {
         $('.vex-dialog-buttons').prepend(sort_select);
+        assignSortValues($('#search_sort').val());
     };
 
     // vex dialog callback
@@ -515,7 +516,6 @@
         bindLoadButton();
 
         assignFormValues($('#search_input').val());
-        assignSortValues($('#search_sort').val());
 
         let mentionTimer = setInterval(function(){
             if (loaded.mentions === true) {

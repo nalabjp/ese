@@ -128,6 +128,8 @@
                         words.unshift(v);
                     }
                     break;
+                case 'sort':
+                    break;
                 default:
                     for(let v of val.split(' ')) {
                         if (v.startsWith('-')) {
@@ -143,6 +145,16 @@
 
         return words.join(' ');
     };
+
+    let buildSortKey = function(valueHash) {
+      if (typeof valueHash.sort === 'undefined') return '';
+      return valueHash.sort.split('-')[0];
+    }
+
+    let buildSortOrder = function(valueHash) {
+      if (typeof valueHash.sort === 'undefined') return '';
+      return valueHash.sort.split('-')[1];
+    }
 
     // Assign values to form
     let assignFormValues = function(searchWord) {
@@ -167,6 +179,7 @@
             created: [],
             updated: [],
             sharing: '',
+            sort: '',
         };
 
         for(let chunk of wordList) {
@@ -225,6 +238,10 @@
         }
         e.focus();
     };
+
+    let assignSortValues = function(sort_value) {
+      $('.ese-container .ese-block select[name="sort"]').val(sort_value);
+    }
 
     // Clear all values in form
     let clearForm = function() {
@@ -362,6 +379,19 @@
         '</style>',
         '<div class="ese-container">',
             '<div class="ese-block">',
+                '<label>ソート</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事のソート順を指定"></i><br />' +
+                '<select class="form-control" name="sort">' +
+                '<option selected="selected" value="">Best match</option>' +
+                '<option value="created-desc">Newest</option>' +
+                '<option value="created-asc">Oldest</option>' +
+                '<option value="updated-desc">Recently updated</option>' +
+                '<option value="updated-asc">Least recently updated</option>' +
+                '<option value="stars-desc">Most starred</option>' +
+                '<option value="watches-desc">Most watched</option>' +
+                '<option value="comments-desc">Most commented</option>' +
+                '</select>',
+            '</div>',
+            '<div class="ese-block">',
                 '<label>キーワード</label>&nbsp;<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" data-title="記事名 or カテゴリ or 本文にkeywordを含むものを絞り込み"></i>' +
                 '<input name="keyword" type="text" placeholder="keyword" />',
             '</div>',
@@ -462,8 +492,9 @@
     // vex dialog callback
     let callback = function (valueHash) {
         if (!valueHash) return console.log('Cancelled');
-
         $('#search_input').val(buildSearchWord(valueHash));
+        $('#search_input_sort').val(buildSortKey(valueHash));
+        $('#search_input_order').val(buildSortOrder(valueHash));
         console.log(esaForm);
         esaForm.submit();
     };
@@ -477,6 +508,7 @@
         bindLoadButton();
 
         assignFormValues($('#search_input').val());
+        assignSortValues($('#search_sort').val());
 
         let mentionTimer = setInterval(function(){
             if (loaded.mentions === true) {
@@ -514,6 +546,7 @@
             afterOpen: afterOpen,
             beforeClose: beforeClose,
         });
+        $('.ese-container .ese-block input[name="keyword"]').focus();
     };
 
     let shortcutEse = function() {

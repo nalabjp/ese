@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      1.2.0
+// @version      1.2.1
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -212,7 +212,7 @@
             }
         }
 
-        Object.keys(valueHash).forEach(function(key) {
+        keys.forEach(function(key) {
             let val = this[key];
             switch(key) {
                 case 'keyword':
@@ -264,12 +264,13 @@
     };
 
     // Save current ese form
-    // TODO: Should we use brwoserify for using 'form-serialize'?
-    let beforeSaveValues = function() {
-        $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-container #ese_before_save').val('1');
-    };
-
-    let saveValues = function(valueHash) {
+    let saveValues = function() {
+        let valueHash = {};
+        $("form.vex-dialog-form").serializeArray().map(function(x){
+            if (x.value !== '') {
+                valueHash[x.name] = x.value;
+            }
+        });
         GM_setValue('ese_form_data', buildSearchWord(valueHash));
         notify('Save Form');
     };
@@ -474,7 +475,6 @@
                 '<input value="false" name="sharing" type="radio" id="sharing_false" /><label for="sharing_false">false</label>' +
                 '<input value="none" name="sharing" type="radio" id="sharing_none" /><label for="sharing_none">none</label>',
             '</div>',
-            '<input type="hidden" name="ese_before_save" id="ese_before_save" />',
         '</div>'
     ].join('');
 
@@ -482,7 +482,7 @@
     let buttons = [
         $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-primary js-disable-on-uploading', text: 'Search' }),
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory', text: 'Clear', click: clearForm }),
-        $.extend({}, vex.dialog.buttons.YES, { className: 'btn btn-secondory ese-save-button', text: 'Save', click: beforeSaveValues }),
+        $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-save-button', text: 'Save', click: saveValues }),
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-load-button', text: 'Load', click: loadValues }),
     ];
 
@@ -531,22 +531,10 @@
 
         let tagTimer = setInterval(function(){
             if (loaded.tags === true) {
-                clearInterval(mentionTimer);
+                clearInterval(tagTimer);
                 enableTagSuggestion();
             }
         }, 1000);
-    };
-
-    // vex dialog beforeClose
-    let beforeClose = function() {
-        if (typeof this.value !== "undefined" && this.value.ese_before_save === '1') {
-            $('.vex.vex-theme-default .vex-dialog-form .vex-dialog-input .ese-container #ese_before_save').val('');
-            delete this.value.ese_before_save;
-            saveValues(this.value);
-            delete this.value;
-            return false;
-        }
-        return true;
     };
 
     let openEse = function(){
@@ -556,7 +544,6 @@
             buttons: buttons,
             callback: callback,
             afterOpen: afterOpen,
-            beforeClose: beforeClose,
         });
 
         addSortSelect();

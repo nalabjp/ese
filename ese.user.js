@@ -181,26 +181,31 @@
             sharing: '',
             sort: '',
         };
+        let keys = Object.keys(valueHash);
 
         for(let chunk of wordList) {
             if (chunk.includes(':')) {
                 let kv = chunk.split(':', 2);
-                switch(kv[0]) {
-                    case 'wip':
-                    case 'kind':
-                    case 'starred':
-                    case 'watched':
-                    case 'sharing':
-                        valueHash[kv[0]] = kv[1];
-                        break;
-                    default:
-                        if (kv[0].startsWith('-')) {
-                            let v = kv[0].substr(0, 1) + kv[1];
-                            let k = kv[0].substr(1);
-                            valueHash[k].push(v);
-                        } else {
-                            valueHash[kv[0]].push(kv[1]);
-                        }
+                if ($.inArray(kv[0], keys) >= 0) {
+                    switch(kv[0]) {
+                        case 'wip':
+                        case 'kind':
+                        case 'starred':
+                        case 'watched':
+                        case 'sharing':
+                            valueHash[kv[0]] = kv[1];
+                            break;
+                        default:
+                            if (kv[0].startsWith('-')) {
+                                let v = kv[0].substr(0, 1) + kv[1];
+                                let k = kv[0].substr(1);
+                                valueHash[k].push(v);
+                            } else {
+                                valueHash[kv[0]].push(kv[1]);
+                            }
+                    }
+                } else {
+                    valueHash.keyword.push(chunk);
                 }
             } else {
                 valueHash.keyword.push(chunk);

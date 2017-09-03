@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      1.1.1
+// @version      1.2.0
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -128,6 +128,8 @@
                         words.unshift(v);
                     }
                     break;
+                case 'sort':
+                    break;
                 default:
                     for(let v of val.split(' ')) {
                         if (v.startsWith('-')) {
@@ -142,6 +144,16 @@
         }, valueHash);
 
         return words.join(' ');
+    };
+
+    let buildSortKey = function(valueHash) {
+        if (typeof valueHash.sort === 'undefined') return '';
+        return valueHash.sort.split('-')[0];
+    };
+
+    let buildSortOrder = function(valueHash) {
+        if (typeof valueHash.sort === 'undefined') return '';
+        return valueHash.sort.split('-')[1];
     };
 
     // Assign values to form
@@ -167,27 +179,33 @@
             created: [],
             updated: [],
             sharing: '',
+            sort: '',
         };
+        let keys = Object.keys(valueHash);
 
         for(let chunk of wordList) {
             if (chunk.includes(':')) {
                 let kv = chunk.split(':', 2);
-                switch(kv[0]) {
-                    case 'wip':
-                    case 'kind':
-                    case 'starred':
-                    case 'watched':
-                    case 'sharing':
-                        valueHash[kv[0]] = kv[1];
-                        break;
-                    default:
-                        if (kv[0].startsWith('-')) {
-                            let v = kv[0].substr(0, 1) + kv[1];
-                            let k = kv[0].substr(1);
-                            valueHash[k].push(v);
-                        } else {
-                            valueHash[kv[0]].push(kv[1]);
-                        }
+                if ($.inArray(kv[0], keys) >= 0) {
+                    switch(kv[0]) {
+                        case 'wip':
+                        case 'kind':
+                        case 'starred':
+                        case 'watched':
+                        case 'sharing':
+                            valueHash[kv[0]] = kv[1];
+                            break;
+                        default:
+                            if (kv[0].startsWith('-')) {
+                                let v = kv[0].substr(0, 1) + kv[1];
+                                let k = kv[0].substr(1);
+                                valueHash[k].push(v);
+                            } else {
+                                valueHash[kv[0]].push(kv[1]);
+                            }
+                    }
+                } else {
+                    valueHash.keyword.push(chunk);
                 }
             } else {
                 valueHash.keyword.push(chunk);
@@ -224,6 +242,10 @@
           e.val(valueHash.keyword.join(' ')).change();
         }
         e.focus();
+    };
+
+    let assignSortValues = function(sort_value) {
+        $('.vex-dialog-buttons select[name="sort"]').val(sort_value);
     };
 
     // Clear all values in form
@@ -338,6 +360,11 @@
             '.ese-block input[type="radio"] {',
                 'margin-left: 10px;',
                 'margin-right: 10px;',
+            '}',
+            '.form-control.ese-select {',
+                'display: inline-block;',
+                'width: auto;',
+                'vertical-align: middle;',
             '}',
             '.ese-save-button, .ese-load-button {',
                 'display: none;',
@@ -459,11 +486,28 @@
         $.extend({}, vex.dialog.buttons.NO,  { className: 'btn btn-secondory ese-load-button', text: 'Load', click: loadValues }),
     ];
 
+    // sort select box
+    let sort_select = '<select class="form-control ese-select input-sm" name="sort">' +
+                          '<option value="created-desc">Newest</option>' +
+                          '<option value="created-asc">Oldest</option>' +
+                          '<option selected="selected" value="">Recently updated</option>' +
+                          '<option value="updated-asc">Least recently updated</option>' +
+                          '<option value="stars-desc">Most starred</option>' +
+                          '<option value="watches-desc">Most watched</option>' +
+                          '<option value="comments-desc">Most commented</option>' +
+                          '<option value="best_match-desc">Hottest</option>' +
+                      '</select>';
+    let addSortSelect = function() {
+        $('.vex-dialog-buttons').prepend(sort_select);
+        assignSortValues($('#search_sort').val());
+    };
+
     // vex dialog callback
     let callback = function (valueHash) {
         if (!valueHash) return console.log('Cancelled');
-
         $('#search_input').val(buildSearchWord(valueHash));
+        $('#search_input_sort').val(buildSortKey(valueHash));
+        $('#search_input_order').val(buildSortOrder(valueHash));
         console.log(esaForm);
         esaForm.submit();
     };
@@ -514,6 +558,10 @@
             afterOpen: afterOpen,
             beforeClose: beforeClose,
         });
+
+        addSortSelect();
+
+        $('.ese-container .ese-block input[name="keyword"]').focus();
     };
 
     let shortcutEse = function() {

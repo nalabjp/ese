@@ -212,7 +212,7 @@
             }
         }
 
-        Object.keys(valueHash).forEach(function(key) {
+        keys.forEach(function(key) {
             let val = this[key];
             switch(key) {
                 case 'keyword':

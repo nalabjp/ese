@@ -531,7 +531,7 @@
 
         let tagTimer = setInterval(function(){
             if (loaded.tags === true) {
-                clearInterval(mentionTimer);
+                clearInterval(tagTimer);
                 enableTagSuggestion();
             }
         }, 1000);

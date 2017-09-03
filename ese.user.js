@@ -483,14 +483,14 @@
 
     // sort select box
     let sort_select = '<select class="form-control ese-select input-sm" name="sort">' +
-                          '<option selected="selected" value="">Best match</option>' +
                           '<option value="created-desc">Newest</option>' +
                           '<option value="created-asc">Oldest</option>' +
-                          '<option value="updated-desc">Recently updated</option>' +
+                          '<option selected="selected" value="">Recently updated</option>' +
                           '<option value="updated-asc">Least recently updated</option>' +
                           '<option value="stars-desc">Most starred</option>' +
                           '<option value="watches-desc">Most watched</option>' +
                           '<option value="comments-desc">Most commented</option>' +
+                          '<option value="best_match-desc">Hottest</option>' +
                       '</select>';
     let addSortSelect = function() {
         $('.vex-dialog-buttons').prepend(sort_select);

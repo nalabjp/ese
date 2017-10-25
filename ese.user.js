@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      1.2.3
+// @version      1.2.4
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Esa Search Extension
 // @namespace    ese
-// @version      1.2.2
+// @version      1.2.3
 // @description  Esa Search Extension makes advanced searching easy.
 // @author       nalabjp
 // @match        https://*.esa.io/*
@@ -10,9 +10,11 @@
 // @require      https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/js/vex.combined.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.4/js/jquery.atwho.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js
 // @resource     vexCSS https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex.min.css
 // @resource     vexTheme https://cdnjs.cloudflare.com/ajax/libs/vex-js/4.0.0/css/vex-theme-default.min.css
 // @resource     atjsCSS https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.4/css/jquery.atwho.min.css
+// @resource     bootstrapCSS https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_setValue
@@ -38,6 +40,13 @@
 
     const atjsCSS = GM_getResourceText('atjsCSS');
     GM_addStyle(atjsCSS);
+
+    /*
+     * Configuration for bootstrap
+     */
+
+    const bootstrapCSS = GM_getResourceText('bootstrapCSS');
+    GM_addStyle(bootstrapCSS);
 
     /*
      * Utilities
